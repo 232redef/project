@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+input, select, textarea {
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  ring: 2px solid #6366f1;
+}
