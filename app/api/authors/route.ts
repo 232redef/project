@@ -25,7 +25,6 @@ export async function POST(request: Request) {
     updatedAt: date 
   };
   
-  // Используем функцию добавления в постоянное хранилище
   addAuthor(author);
   console.log("Author saved to persistent storage:", author);
   

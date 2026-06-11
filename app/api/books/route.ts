@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authors as getAuthors, books as getBooks, addBook } from "@/lib/store";
+import { getAuthors, getBooks, addBook } from "@/lib/store";
 import { createId, paginate, parsePagination, readJson, validateBookInput } from "@/lib/validation";
 import { BookInput } from "@/types";
 
@@ -8,9 +8,12 @@ export async function GET(request: NextRequest) {
   const q = (request.nextUrl.searchParams.get("q") || "").toLowerCase();
   const authorId = request.nextUrl.searchParams.get("authorId") || "";
   
-  let result = getBooks.map((book) => ({
+  const books = getBooks();
+  const authors = getAuthors();
+  
+  let result = books.map((book) => ({
     ...book,
-    author: getAuthors.find((author) => author.id === book.authorId) || null
+    author: authors.find((author) => author.id === book.authorId) || null
   }));
   
   if (q) {
@@ -55,7 +58,8 @@ export async function POST(request: Request) {
     
     addBook(newBook);
     
-    const author = getAuthors.find((item) => item.id === newBook.authorId) || null;
+    const authorsList = getAuthors();
+    const author = authorsList.find((item) => item.id === newBook.authorId) || null;
     
     return NextResponse.json({ ...newBook, author }, { status: 201 });
   } catch (error) {
